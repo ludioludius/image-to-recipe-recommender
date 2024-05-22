@@ -13,10 +13,12 @@ public class IngredientData {
     private List<DetectedObject> ingredientList;
 
     // Constructor that takes in an API wrapper class and an image to create the data list
-    public IngredientData(ClarifaiClient clarifaiClient, String image) throws IOException {
+    public IngredientData(ClarifaiClient clarifaiClient) throws IOException {
+        String image = ""; // TODO: ADD extracting image from request, add an image class and autowire it
         // Call API wrapper method to get data based on the image
         this.ingredientList = clarifaiClient.ObjectsFromImage(image);
         filterDataList();
+        // TODO: new function to remove unwanted objects (ie objects that are not food items)
     }
 
     // Method to filter the data list

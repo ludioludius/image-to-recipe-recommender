@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO: make it return List<DetectedObject>
 @Component
 public class ClarifaiClient {
 
@@ -64,13 +63,13 @@ public class ClarifaiClient {
 
             for (Concept concept : region.getData().getConceptsList()) {
                 // Accessing and rounding the concept value
-                String label = concept.getName();
-                double value = concept.getValue();
-                detectedObjectList();
+                String detectedObject = concept.getName();
+                double probability = concept.getValue();
+                detectedObjectList.add(new DetectedObject(probability, detectedObject));
 
-                System.out.println(label + ": " + value + " BBox: " + topRow + ", " + leftCol + ", " + bottomRow + ", " + rightCol);
+                System.out.println(detectedObject + ": " + probability + " BBox: " + topRow + ", " + leftCol + ", " + bottomRow + ", " + rightCol);
             }
         }
-        return "returns processed ingredients from api call";
+        return detectedObjectList;
     }
 }

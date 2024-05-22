@@ -1,16 +1,16 @@
 package dev.ayush.imagetoreciperecommender.model;
 
 public class DetectedObject {
-    private int probability;
+    private double probability;
     private String label;
 
-    public DetectedObject(int probability, String label) {
+    public DetectedObject(double probability, String label) {
         this.probability = probability;
         this.label = label;
     }
 
-    public int getProbability() {
-        return probability;
+    public double getProbability() {
+        return this.probability;
     }
 
     public String getLabel() {
@@ -21,7 +21,7 @@ public class DetectedObject {
         this.label = label;
     }
 
-    public void setProbability(int probability) {
+    public void setProbability(double probability) {
         this.probability = probability;
     }
 }

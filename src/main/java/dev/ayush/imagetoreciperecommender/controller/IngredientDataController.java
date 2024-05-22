@@ -16,13 +16,13 @@ public class IngredientDataController {
     // field and constructor for clarifai client
     private final ClarifaiClient apiClient;
 
-    public IngredientDataController(ClarifaiClient apiClient, IngredientData ingredientData) {
+    public IngredientDataController(ClarifaiClient apiClient) {
         this.apiClient = apiClient;
     }
 
     // http:
     @GetMapping
     public String getIngredientsFromImage() throws IOException {
-        return new IngredientData(apiClient, "pretend image").toString();
+        return new IngredientData(apiClient).toString();
     }
 }
