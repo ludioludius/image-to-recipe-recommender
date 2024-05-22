@@ -5,26 +5,48 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // creates the ingredient list as a result of calling the API
 @Component
 public class IngredientData {
     private List<DetectedObject> ingredientList;
 
-    // Constructor that takes in an API wrapper class and an image to create the data list
-    public IngredientData(ClarifaiClient clarifaiClient) throws IOException {
-        String image = ""; // TODO: ADD extracting image from request, add an image class and autowire it
-        // Call API wrapper method to get data based on the image
-        this.ingredientList = clarifaiClient.ObjectsFromImage(image);
-        filterDataList();
-        // TODO: new function to remove unwanted objects (ie objects that are not food items)
+
+    // method takes in clarifaiClient and image bytes to populate the ingredient list
+    public List<String> generateIngredientList(ClarifaiClient clarifaiClient, byte[] imageFile) throws IOException {
+        this.ingredientList = clarifaiClient.ObjectsFromImage(imageFile);
+        filterDataList(); // remove low probability detections
+        // TODO: new function to remove unwanted objects (ie objects that are not food items) ????
+        return this.getLabels();
     }
+
+    public List<String> getLabels(){
+
+        // create list of labels, i.e discard probability
+        List<String> labels = new ArrayList<String>();
+        for (DetectedObject detectedObject : this.ingredientList) {
+           labels.add(detectedObject.getLabel());
+        }
+
+        // remove duplicates
+        Set<String> labelsSet = new HashSet<>(labels);
+        return new ArrayList<>(labelsSet);
+    }
+
 
     // Method to filter the data list
     public void filterDataList() {
-        List<DetectedObject> filteredIngredientList = new ArrayList<>();
 
+        // null guard
+        if (this.ingredientList == null) {
+            this.ingredientList = new ArrayList<>();
+        }
+
+        // remove low probability detections
+        List<DetectedObject> filteredIngredientList = new ArrayList<>();
         for (DetectedObject detectedObject : ingredientList) {
             if (detectedObject.getProbability() > 0.4) {
                 filteredIngredientList.add(detectedObject);
@@ -36,10 +58,5 @@ public class IngredientData {
 
     public List<DetectedObject> getIngredientList() {
         return this.ingredientList;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 }

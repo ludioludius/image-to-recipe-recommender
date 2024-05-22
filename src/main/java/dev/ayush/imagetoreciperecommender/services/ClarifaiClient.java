@@ -4,6 +4,7 @@ import com.clarifai.grpc.api.*;
 import com.clarifai.grpc.api.status.StatusCode;
 import com.google.protobuf.ByteString;
 import dev.ayush.imagetoreciperecommender.model.DetectedObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.clarifai.channel.ClarifaiChannel;
@@ -24,14 +25,15 @@ public class ClarifaiClient {
     static final String MODEL_VERSION_ID = "aa7f35c01e0642fda5cf400f543e7c40";
     static final String IMAGE_FILE_LOCATION = "/Users/ayushbharat/IdeaProjects/image-to-recipe-recommender/src/main/java/dev/ayush/imagetoreciperecommender/services/carrots_potatoes2.png";
 
+    @Value("${api.key}")
     private String apiKey;
 
     // returns the data returned by a call the api with the given image
-    public List<DetectedObject> ObjectsFromImage(String image) throws IOException {
+    public List<DetectedObject> ObjectsFromImage(byte[] imageFile) throws IOException {
         List<DetectedObject> detectedObjectList = new ArrayList<DetectedObject>();
 
         V2Grpc.V2BlockingStub stub = V2Grpc.newBlockingStub(ClarifaiChannel.INSTANCE.getGrpcChannel())
-                .withCallCredentials(new ClarifaiCallCredentials("d6a40aee9fb047b7a96c3538ad21532b"));
+                .withCallCredentials(new ClarifaiCallCredentials(apiKey));
         MultiOutputResponse response = stub.postModelOutputs(
                 PostModelOutputsRequest.newBuilder()
                         .setModelId(MODEL_ID)
@@ -39,9 +41,7 @@ public class ClarifaiClient {
                                 Input.newBuilder().setData(
                                         Data.newBuilder().setImage(
                                                 Image.newBuilder()
-                                                        .setBase64(ByteString.copyFrom(Files.readAllBytes(
-                                                                new File(IMAGE_FILE_LOCATION).toPath()
-                                                        )))
+                                                        .setBase64(ByteString.copyFrom(imageFile))
                                         )
                                 )
                         )

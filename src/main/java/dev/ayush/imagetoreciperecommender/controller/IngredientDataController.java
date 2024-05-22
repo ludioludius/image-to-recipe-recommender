@@ -1,5 +1,6 @@
 package dev.ayush.imagetoreciperecommender.controller;
 
+import dev.ayush.imagetoreciperecommender.model.DetectedObject;
 import dev.ayush.imagetoreciperecommender.model.IngredientData;
 import dev.ayush.imagetoreciperecommender.services.ClarifaiClient;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +17,16 @@ public class IngredientDataController {
 
     // field and constructor for clarifai client
     private final ClarifaiClient apiClient;
+    private final IngredientData ingredientData;
 
-    public IngredientDataController(ClarifaiClient apiClient) {
+    public IngredientDataController(ClarifaiClient apiClient, IngredientData ingredientData) {
         this.apiClient = apiClient;
+        this.ingredientData = ingredientData;
     }
 
     // http:
     @PostMapping
-    public ResponseEntity<String> getIngredientsFromImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
+    public ResponseEntity<?> getIngredientsFromImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
         byte[] imageBytes;
 
         // return error if empty file uploaded
@@ -36,14 +39,11 @@ public class IngredientDataController {
             imageBytes = imageFile.getBytes();
             // call user code to generate objects from image and return objects in the body
             System.out.println("File size: " + imageBytes.length);
-            return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully and stored in memory.");
+            List<String> detectedIngredients = ingredientData.generateIngredientList(apiClient, imageBytes);
+            return ResponseEntity.status(HttpStatus.OK).body(detectedIngredients);
 
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file."); // TODO: UPDATE THIS ERROR MESSAGE< DOENST REPRESENT APP ERROR
         }
-
-        // return new IngredientData(apiClient).toString();
     }
-
-    // wish list: new method in Ingredient data class that
 }
