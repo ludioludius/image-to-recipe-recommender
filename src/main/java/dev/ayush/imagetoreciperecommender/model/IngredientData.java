@@ -9,11 +9,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// creates the ingredient list as a result of calling the API
+/**
+ * This class stores the list of ingredients detected in the image, it includes methods for creating that list
+ * by removing low probability detections and removing not food detections.
+ */
 @Component
 public class IngredientData {
     private List<DetectedObject> ingredientList;
 
+    public IngredientData(List<DetectedObject> ingredientList) {
+        this.ingredientList = ingredientList;
+    }
 
     // method takes in clarifaiClient and image bytes to populate the ingredient list
     public List<String> generateIngredientList(ClarifaiClient clarifaiClient, byte[] imageFile) throws IOException {
@@ -24,7 +30,6 @@ public class IngredientData {
     }
 
     public List<String> getLabels(){
-
         // create list of labels, i.e discard probability
         List<String> labels = new ArrayList<String>();
         for (DetectedObject detectedObject : this.ingredientList) {
@@ -39,7 +44,6 @@ public class IngredientData {
 
     // Method to filter the data list
     public void filterDataList() {
-
         // null guard
         if (this.ingredientList == null) {
             this.ingredientList = new ArrayList<>();
@@ -52,7 +56,6 @@ public class IngredientData {
                 filteredIngredientList.add(detectedObject);
             }
         }
-
         this.ingredientList = filteredIngredientList;
     }
 
