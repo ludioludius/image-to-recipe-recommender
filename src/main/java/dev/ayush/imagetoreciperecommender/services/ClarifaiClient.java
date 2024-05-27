@@ -32,7 +32,7 @@ public class ClarifaiClient {
         List<DetectedObject> detectedObjectList = new ArrayList<DetectedObject>();
 
         V2Grpc.V2BlockingStub stub = V2Grpc.newBlockingStub(ClarifaiChannel.INSTANCE.getGrpcChannel())
-                .withCallCredentials(new ClarifaiCallCredentials(apiKey));
+                .withCallCredentials(new ClarifaiCallCredentials("d6a40aee9fb047b7a96c3538ad21532b"));
         MultiOutputResponse response = stub.postModelOutputs(
                 PostModelOutputsRequest.newBuilder()
                         .setModelId(MODEL_ID)

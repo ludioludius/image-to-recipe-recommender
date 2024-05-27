@@ -1,0 +1,29 @@
+name: Build n test Java Spring App
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-deploy:
+    name: Build n Deploy Java Spring Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          distribution: 'oracle'
+          java-version: '21'
+
+      - name: Run unit tests
+        run: mvn -B test --file pom.xml
+
+      - name: build the jar file
+        run: |
+          mvn clean
+          mvn -B package --file pom.xml
+
+      - name: Build Docker Image
+
