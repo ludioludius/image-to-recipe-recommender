@@ -1,11 +1,11 @@
-name: Build n test Java Spring App
+name: Build and test the backend
 on:
   push:
     branches:
       - main
 jobs:
   build-deploy:
-    name: Build n Deploy Java Spring Backend
+    name: Build and test the backend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
