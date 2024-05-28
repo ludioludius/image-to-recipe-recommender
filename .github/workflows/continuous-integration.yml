@@ -1,7 +1,7 @@
 name: Build and test the backend
 on:
   push:
-    branches:
+    branches-ignore:
       - main
 jobs:
   build-deploy:
