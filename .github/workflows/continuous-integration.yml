@@ -32,10 +32,19 @@ jobs:
           node-version: 20
 
       - name: Install frontend dependencies
-        run: npm install --prefix recommender-frontend
+        run: |
+          cd frontend
+          cd recommender-frontend
+          pwd # make sure we're in the right dir
+          npm install
+        
 
       - name: Build frontend
-        run: npm run build --prefix recommender-frontend
+        run: |
+          cd frontend
+          cd recommender-frontend
+          pwd # make sure we're in the right dir
+          npm run build
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
