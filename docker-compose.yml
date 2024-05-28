@@ -1,0 +1,21 @@
+version: "3.3"
+services:
+  nginx:
+    build:
+      dockerfile: docker/nginx/Dockerfile
+      context: .
+    ports:
+      - "80:80"
+  client:
+    build:
+      dockerfile: docker/frontend/Dockerfile
+      context: .
+    container_name: client
+  backend:
+    build:
+      dockerfile: docker/backend/Dockerfile
+      context: .
+    container_name: backend
+
+
+

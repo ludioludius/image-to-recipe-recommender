@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController // tells spring that this a rest controller class
 @RequestMapping("/ingredients")  // http:localhost:8080/ingredients
+@CrossOrigin()
 public class IngredientDataController {
 
     private final ClarifaiClient apiClient;
