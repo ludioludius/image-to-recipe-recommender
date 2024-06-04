@@ -1,11 +1,11 @@
-name: Build, test and dockerize the application
+name: repeat CI and deploy the app
 on:
   push:
-    branches-ignore:
+    branches:
       - main
 jobs:
   build:
-    name: Build and test the app, build docker images
+    name: Build and test and deploy the app
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -50,9 +50,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      #- name: Build Docker images
-      # run: docker-compose -f docker-compose.yml build
-
       - name: Build and push to dockerhub
         run: |
           docker-compose -f docker-compose.yml build
@@ -71,7 +68,3 @@ jobs:
           docker-compose rm -f
           docker-compose pull   
           docker-compose up -d
-
-
-        
-
