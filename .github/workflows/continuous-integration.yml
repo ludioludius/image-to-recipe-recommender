@@ -61,12 +61,12 @@ jobs:
       - name: save secret to file
         run: |
           echo $PRIVATE_KEY > private-key.pem
+          chmod 400 "private-key.pem"
         env:
           PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
 
       - name: SSH into EC2 and start up container
         run: |
-          chmod 600 private-key.pem
           ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@ec2-3-145-179-219.us-east-2.compute.amazonaws.com
           cd ITR-containerized
           docker-compose stop
