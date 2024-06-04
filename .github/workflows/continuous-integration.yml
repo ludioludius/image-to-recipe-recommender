@@ -60,7 +60,7 @@ jobs:
 
       - name: save secret to file
         run: |
-          echo $PRIVATE_KEY > private-key.pem
+          echo "PRIVATE_KEY" | base64 --decode > private-key.pem
           chmod 400 private-key.pem
         env:
           PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
