@@ -66,6 +66,7 @@ jobs:
 
       - name: SSH into EC2 and start up container
         run: |
+          chmod 600 private-key.pem
           ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@ec2-3-145-179-219.us-east-2.compute.amazonaws.com
           cd ITR-containerized
           docker-compose stop
