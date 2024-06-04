@@ -65,6 +65,10 @@ jobs:
         env:
           PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
 
+      - name: Debug private key
+        run: |
+          cat private-key.pem
+
       - name: SSH into EC2 and start up container
         run: |
           ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@ec2-3-145-179-219.us-east-2.compute.amazonaws.com
