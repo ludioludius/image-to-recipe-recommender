@@ -49,25 +49,3 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      #- name: Build Docker images
-      # run: docker-compose -f docker-compose.yml build
-
-      - name: Build and push to dockerhub
-        run: |
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml push
-
-      - name: save secret to file
-        run: |
-          echo "${{ secrets.EC2_PRIVATE_KEY }}" > private-key.pem
-          chmod 400 private-key.pem
-
-      - name: SSH into EC2 and start up container
-        run: |
-          ssh -t -o StrictHostKeyChecking=no -i private-key.pem ec2-user@ec2-3-145-179-219.us-east-2.compute.amazonaws.com 'cd ITR-containerized && docker-compose stop && docker-compose rm -f && docker-compose pull && docker-compose up -d'
-
-       
-
-        
-
