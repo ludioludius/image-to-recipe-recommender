@@ -1,0 +1,32 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "nginx",
+      "image": "your-dockerhub-username/nginx:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ]
+    },
+    {
+      "name": "client",
+      "image": "your-dockerhub-username/client:latest",
+      "essential": true
+    },
+    {
+      "name": "backend",
+      "image": "your-dockerhub-username/backend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080
+        }
+      ]
+    }
+  ]
+}
