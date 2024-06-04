@@ -58,14 +58,13 @@ jobs:
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml push
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.EC2_PRIVATE_KEY }}
+      - name: Save secret to file
+        run: |
+          echo ${{ secrets.EC2_PRIVATE_KEY }} > EC2_PRIVATE_KEY.pem
 
       - name: SSH into EC2 and start up container
         run: |
-          ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ec2-user@ec2-3-145-179-219.us-east-2.compute.amazonaws.com
+          ssh -i EC2_PRIVATE_KEY.pem ec2-user@ec2-3-145-179-219.us-east-2.compute.amazonaws.com
           cd ITR-containerized
           docker-compose stop
           docker-compose rm -f
