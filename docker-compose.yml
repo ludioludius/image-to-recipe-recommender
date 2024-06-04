@@ -1,0 +1,24 @@
+version: "3.3"
+services:
+  nginx:
+    build:
+      dockerfile: docker/nginx/Dockerfile
+      context: .
+    image: ludioludius/nginx:latest
+    ports:
+      - "80:80"
+  client:
+    build:
+      dockerfile: docker/frontend/Dockerfile
+      context: .
+    image: ludioludius/client:latest
+    container_name: client
+  backend:
+    build:
+      dockerfile: docker/backend/Dockerfile
+      context: .
+    image: ludioludius/backend:latest
+    container_name: backend
+
+
+

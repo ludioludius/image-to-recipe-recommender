@@ -17,14 +17,13 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * This class handles communication with the clarifai API's object detection model
+ */
 @Component
 public class ClarifaiClient {
 
     static final String MODEL_ID = "general-image-detection";
-    static final String MODEL_VERSION_ID = "aa7f35c01e0642fda5cf400f543e7c40";
-    static final String IMAGE_FILE_LOCATION = "/Users/ayushbharat/IdeaProjects/image-to-recipe-recommender/src/main/java/dev/ayush/imagetoreciperecommender/services/carrots_potatoes2.png";
-
     @Value("${api.key}")
     private String apiKey;
 
@@ -33,7 +32,7 @@ public class ClarifaiClient {
         List<DetectedObject> detectedObjectList = new ArrayList<DetectedObject>();
 
         V2Grpc.V2BlockingStub stub = V2Grpc.newBlockingStub(ClarifaiChannel.INSTANCE.getGrpcChannel())
-                .withCallCredentials(new ClarifaiCallCredentials(apiKey));
+                .withCallCredentials(new ClarifaiCallCredentials("d6a40aee9fb047b7a96c3538ad21532b"));
         MultiOutputResponse response = stub.postModelOutputs(
                 PostModelOutputsRequest.newBuilder()
                         .setModelId(MODEL_ID)
@@ -66,7 +65,6 @@ public class ClarifaiClient {
                 String detectedObject = concept.getName();
                 double probability = concept.getValue();
                 detectedObjectList.add(new DetectedObject(probability, detectedObject));
-
                 System.out.println(detectedObject + ": " + probability + " BBox: " + topRow + ", " + leftCol + ", " + bottomRow + ", " + rightCol);
             }
         }

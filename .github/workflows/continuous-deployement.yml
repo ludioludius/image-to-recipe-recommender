@@ -1,0 +1,70 @@
+name: repeat CI and deploy the app
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build and test and deploy the app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          distribution: 'oracle'
+          java-version: '21'
+
+      - name: Run unit tests
+        run: mvn -B test --file pom.xml
+
+      - name: build the jar file
+        run: |
+          mvn clean
+          mvn -B package --file pom.xml
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          cd recommender-frontend
+          pwd # make sure we're in the right dir
+          npm install
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          cd recommender-frontend
+          pwd # make sure we're in the right dir
+          npm run build
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push to dockerhub
+        run: |
+          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml push
+
+      - name: Build and push to dockerhub
+        run: |
+          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml push
+
+      - name: save secret to file
+        run: |
+          echo "${{ secrets.EC2_PRIVATE_KEY }}" > private-key.pem
+          chmod 400 private-key.pem
+
+      - name: SSH into EC2 and start up container
+        run: |
+          ssh -t -o StrictHostKeyChecking=no -i private-key.pem ec2-user@ec2-3-145-179-219.us-east-2.compute.amazonaws.com 'cd ITR-containerized && docker-compose stop && docker-compose rm -f && docker-compose pull && docker-compose up -d'
