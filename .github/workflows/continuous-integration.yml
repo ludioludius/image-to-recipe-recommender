@@ -61,13 +61,9 @@ jobs:
       - name: save secret to file
         run: |
           echo $PRIVATE_KEY > private-key.pem
-          chmod 400 "private-key.pem"
+          chmod 400 private-key.pem
         env:
           PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-
-      - name: Debug private key
-        run: |
-          cat private-key.pem
 
       - name: SSH into EC2 and start up container
         run: |
