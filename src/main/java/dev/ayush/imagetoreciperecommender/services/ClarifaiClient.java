@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,6 +25,18 @@ import java.util.List;
 public class ClarifaiClient {
 
     static final String MODEL_ID = "general-image-detection";
+    public static final List<String> detectableIngredients = Arrays.asList(
+            "Artichoke", "Asparagus", "Bagel", "Banana", "Beer", "Bell pepper",
+            "Bread", "Broccoli", "Burrito", "Cabbage","Cake", "Candy", "Cantaloupe", "Carrot",
+            "Cheese", "Chicken", "Cocktail", "Coconut", "Coffee", "Common fig", "Cookie", "Cream", "Croissant",
+            "Cucumber", "Dairy", "Doughnut", "Duck", "Egg", "Fast food", "Fish", "Food", "French fries", "Fruit",
+            "Grape", "Grapefruit", "Guacamole", "Hamburger", "Honeycomb", "Hot dog","Ice cream", "Juice", "Mango",
+            "Maple", "Milk", "Muffin", "Mushroom", "Orange", "Pancake", "Pasta", "Pastry", "Peach", "Pear", "Pineapple",
+            "Pizza", "Pomegranate", "Popcorn", "Potato", "Pretzel", "Pumpkin", "Rabbit", "Radish", "Salad", "Sandwich",
+            "Seafood", "Shrimp", "Snack", "Squash", "Squid","Strawberry", "Sushi", "Tomato", "Turkey","Vegetable",
+            "Waffle", "Watermelon", "Wine","Winter melon", "Zucchini"
+    );
+
     @Value("${api.key}")
     private String apiKey;
 
