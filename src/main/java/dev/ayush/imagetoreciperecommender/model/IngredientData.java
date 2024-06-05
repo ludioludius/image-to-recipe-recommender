@@ -11,28 +11,41 @@ import java.util.Set;
 
 /**
  * This class stores the list of ingredients detected in the image, it includes methods for creating that list
- * by removing low probability detections and removing not food detections.
+ * by removing low probability detections and removing not food detections. The object detection API is called to
+ * generate an initial unfiltered list of detected objects before filtering.
  */
 @Component
 public class IngredientData {
-    private List<DetectedObject> ingredientList;
+    private List<DetectedObject> detectedObjects;
 
-    public IngredientData(List<DetectedObject> ingredientList) {
-        this.ingredientList = ingredientList;
+    public IngredientData(List<DetectedObject> detectedObjects) {
+        this.detectedObjects = detectedObjects;
     }
 
     // method takes in clarifaiClient and image bytes to populate the ingredient list
     public List<String> generateIngredientList(ClarifaiClient clarifaiClient, byte[] imageFile) throws IOException {
-        this.ingredientList = clarifaiClient.ObjectsFromImage(imageFile);
-        filterDataList(); // remove low probability detections
+
+        this.detectedObjects = clarifaiClient.ObjectsFromImage(imageFile);
+        this.filterDataList(); // remove low probability detections
+        List<String> imageLabels =  this.getLabels();
         // TODO: new function to remove unwanted objects (ie objects that are not food items) ????
-        return this.getLabels();
+        return getIngredientLabels(imageLabels);
+    }
+
+    public List<String> getIngredientLabels(List<String> imageLabels) {
+        List<String> filteredLabels = new ArrayList<>();
+        for (String label : imageLabels) {
+            if (ClarifaiClient.detectableIngredients.contains(label)) {
+                filteredLabels.add(label);
+            }
+        }
+        return filteredLabels;
     }
 
     public List<String> getLabels(){
         // create list of labels, i.e discard probability
         List<String> labels = new ArrayList<String>();
-        for (DetectedObject detectedObject : this.ingredientList) {
+        for (DetectedObject detectedObject : this.detectedObjects) {
            labels.add(detectedObject.getLabel());
         }
 
@@ -45,21 +58,21 @@ public class IngredientData {
     // Method to filter the data list
     public void filterDataList() {
         // null guard
-        if (this.ingredientList == null) {
-            this.ingredientList = new ArrayList<>();
+        if (this.detectedObjects == null) {
+            this.detectedObjects = new ArrayList<>();
         }
 
         // remove low probability detections
         List<DetectedObject> filteredIngredientList = new ArrayList<>();
-        for (DetectedObject detectedObject : ingredientList) {
+        for (DetectedObject detectedObject : detectedObjects) {
             if (detectedObject.getProbability() > 0.4) {
                 filteredIngredientList.add(detectedObject);
             }
         }
-        this.ingredientList = filteredIngredientList;
+        this.detectedObjects = filteredIngredientList;
     }
 
-    public List<DetectedObject> getIngredientList() {
-        return this.ingredientList;
+    public List<DetectedObject> getDetectedObjects() {
+        return this.detectedObjects;
     }
 }
