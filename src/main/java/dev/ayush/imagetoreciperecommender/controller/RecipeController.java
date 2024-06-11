@@ -1,6 +1,7 @@
 package dev.ayush.imagetoreciperecommender.controller;
 
 import dev.ayush.imagetoreciperecommender.model.IngredientData;
+import dev.ayush.imagetoreciperecommender.model.Recipe;
 import dev.ayush.imagetoreciperecommender.services.ClarifaiClient;
 import dev.ayush.imagetoreciperecommender.services.SpoonacularClient;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class RecipeController {
             List<String> detectedIngredients = ingredientData.generateIngredientList(clarifaiClient, imageBytes);
 
             // TODO: format call to spoonacular API
-            String recipes = spoonacularClient.getRecipesByIngredients(detectedIngredients);
+            Recipe[] recipes = spoonacularClient.getRecipesByIngredients(detectedIngredients);
 
             return ResponseEntity.status(HttpStatus.OK).body(recipes);
 

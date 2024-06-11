@@ -1,5 +1,6 @@
 package dev.ayush.imagetoreciperecommender.services;
 
+import dev.ayush.imagetoreciperecommender.model.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,13 +18,12 @@ public class SpoonacularClient {
 
     private final RestTemplate restTemplate;
 
-
     @Autowired
     public SpoonacularClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public String getRecipesByIngredients(List<String> ingredients) {
+    public Recipe[] getRecipesByIngredients(List<String> ingredients) {
         // convert list of ingredients into comma separated string
         String ingredientsParam = String.join(",", ingredients);
 
@@ -33,6 +33,6 @@ public class SpoonacularClient {
                 .build()
                 .toUri();
 
-        return restTemplate.getForObject(uri, String.class);
+        return restTemplate.getForObject(uri, Recipe[].class);
     }
 }

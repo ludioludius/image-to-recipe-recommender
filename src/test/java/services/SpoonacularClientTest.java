@@ -1,6 +1,7 @@
 package services;
 
 import dev.ayush.imagetoreciperecommender.model.DetectedObject;
+import dev.ayush.imagetoreciperecommender.model.Recipe;
 import dev.ayush.imagetoreciperecommender.services.ClarifaiClient;
 import dev.ayush.imagetoreciperecommender.services.SpoonacularClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,8 +30,8 @@ class SpoonacularClientTest {
 
         try{
             List<String> ingredients = Arrays.asList("Potato", "Carrot");
-            String recipes = spoonacularClient.getRecipesByIngredients(ingredients);
-            assertFalse(recipes.isEmpty());
+            Recipe[] recipes = spoonacularClient.getRecipesByIngredients(ingredients);
+            assertNotNull(recipes);
             System.out.println(recipes);
         } catch (Exception e){
             e.printStackTrace();
