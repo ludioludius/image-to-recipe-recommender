@@ -47,6 +47,7 @@ const UploadImage = () => {
             </Typography>
             <input
                 accept="image/*"
+                capture="environment"
                 style={{ display: 'none' }}
                 id="raised-button-file"
                 type="file"
