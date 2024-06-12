@@ -1,4 +1,3 @@
-// src/UploadImage.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Box, Button, CircularProgress, Typography, List, ListItem } from '@mui/material';
