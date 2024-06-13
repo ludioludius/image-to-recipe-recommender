@@ -10,9 +10,11 @@ public class Recipe {
     private int id;
     private String title;
     private String image;
-    private List<Ingredient> usedIngredients;
-    private List<Ingredient> missedIngredients;
-
+    private int servings;
+    private String sourceName;
+    private String sourceUrl;
+    private List<Ingredient> extendedIngredients;
+    private String summary;
 
     // Getters and Setters
     public int getId() {
@@ -39,19 +41,43 @@ public class Recipe {
         this.image = image;
     }
 
-    public List<Ingredient> getUsedIngredients() {
-        return usedIngredients;
+    public int getServings() {
+        return servings;
     }
 
-    public void setUsedIngredients(List<Ingredient> usedIngredients) {
-        this.usedIngredients = usedIngredients;
+    public void setServings(int servings) {
+        this.servings = servings;
     }
 
-    public List<Ingredient> getMissedIngredients() {
-        return missedIngredients;
+    public String getSourceName() {
+        return sourceName;
     }
 
-    public void setMissedIngredients(List<Ingredient> missedIngredients) {
-        this.missedIngredients = missedIngredients;
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
+
+    public List<Ingredient> getExtendedIngredients() {
+        return extendedIngredients;
+    }
+
+    public void setExtendedIngredients(List<Ingredient> extendedIngredients) {
+        this.extendedIngredients = extendedIngredients;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

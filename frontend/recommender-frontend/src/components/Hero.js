@@ -5,17 +5,16 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import UploadImage from "../UploadImage";
 import {useRef, useState} from 'react';
 import axios from "axios";
+import Recipes from "./Recipes";
 
 
 export default function Hero() {
     const fileInputRef = useRef(null);
 
-    const [ingredients, setIngredients] = useState([]);
+    const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -37,12 +36,13 @@ export default function Hero() {
             setLoading(true);
             setError('');
             console.log("Backend URL:", process.env.REACT_APP_BACKEND_URL);
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/ingredients`, formData, {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/recipes`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setIngredients(response.data);
+            console.log(response.data)
+            setRecipes(response.data);
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -136,6 +136,7 @@ export default function Hero() {
                         </Link>
                         .
                     </Typography>
+                    <Recipes recipes={recipes}/>
                 </Stack>
                 {loading && <CircularProgress sx={{ mt: 2 }} />}
                 {error && (
@@ -143,11 +144,6 @@ export default function Hero() {
                         {error}
                     </Typography>
                 )}
-                <List sx={{ mt: 2 }}>
-                    {ingredients.map((ingredient, index) => (
-                        <ListItem key={index}>{ingredient}</ListItem>
-                    ))}
-                </List>
             </Container>
         </Box>
     );

@@ -35,4 +35,25 @@ public class SpoonacularClient {
 
         return restTemplate.getForObject(uri, Recipe[].class);
     }
+
+    public Recipe[] getFullRecipeInfoBulk(List<Integer> recipeIds) {
+        // Convert List<Integer> to a comma-separated String
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < recipeIds.size(); i++) {
+            sb.append(recipeIds.get(i));
+            if (i < recipeIds.size() - 1) {
+                sb.append(",");
+            }
+        }
+
+        String recipeIdsString = sb.toString();
+
+        URI uri = UriComponentsBuilder.fromHttpUrl("https://api.spoonacular.com/recipes/informationBulk")
+                .queryParam("ids", recipeIdsString)
+                .queryParam("apiKey", "2fc6e4e3981a4b9bb4142a8f627d4e8a")
+                .build()
+                .toUri();
+
+        return restTemplate.getForObject(uri, Recipe[].class);
+    }
 }

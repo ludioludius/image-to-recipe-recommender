@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -43,12 +44,21 @@ public class RecipeController {
             System.out.println("File size: " + imageBytes.length);
             List<String> detectedIngredients = ingredientData.generateIngredientList(clarifaiClient, imageBytes);
 
-            // TODO: format call to spoonacular API
             Recipe[] recipes = spoonacularClient.getRecipesByIngredients(detectedIngredients);
 
-            return ResponseEntity.status(HttpStatus.OK).body(recipes);
+            // create array of recipe id strings
+            List<Integer> recipeIds = new ArrayList<Integer>();
+            for (Recipe recipe : recipes) {
+                recipeIds.add(recipe.getId());
+            }
+            // use this recipe array to call a new method within spoonacular client that will return an array of additional recipe info
+            Recipe[] recipeWithFullInformation = spoonacularClient.getFullRecipeInfoBulk(recipeIds);
+
+            return ResponseEntity.status(HttpStatus.OK).body(recipeWithFullInformation);
 
         } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("API ERROR"); // TODO: UPDATE THIS ERROR MESSAGE< DOENST REPRESENT APP ERROR
         }
     }
