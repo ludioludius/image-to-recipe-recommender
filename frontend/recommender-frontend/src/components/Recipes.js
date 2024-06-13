@@ -1,4 +1,4 @@
-import {Card, CardMedia} from "@mui/material";
+import {Card, CardMedia, Container} from "@mui/material";
 
 export default function Recipes({recipes}) {
     return (
@@ -12,6 +12,6 @@ export default function Recipes({recipes}) {
                     />
                 </Card>
             )}
-        </>
+       </>
     );
 }

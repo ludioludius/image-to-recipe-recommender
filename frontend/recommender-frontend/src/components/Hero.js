@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {alpha, CircularProgress, List, ListItem} from '@mui/material';
+import {alpha, Card, CardHeader, CircularProgress, Grid} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import {useRef, useState} from 'react';
 import axios from "axios";
 import Recipes from "./Recipes";
+import RecipeReviewCard from "./RecipeReviewCard";
 
 
 export default function Hero() {
@@ -52,6 +53,7 @@ export default function Hero() {
     };
 
     return (
+        <>
         <Box
             id="hero"
             sx={(theme) => ({
@@ -136,7 +138,6 @@ export default function Hero() {
                         </Link>
                         .
                     </Typography>
-                    <Recipes recipes={recipes}/>
                 </Stack>
                 {loading && <CircularProgress sx={{ mt: 2 }} />}
                 {error && (
@@ -146,5 +147,20 @@ export default function Hero() {
                 )}
             </Container>
         </Box>
+            <Container sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                pb: { xs: 8, sm: 12 },
+            }}>
+                <Grid container spacing={2} alignItems="stretch" justifyContent="center">
+                    {recipes.map((recipe, index) => (
+                        <Grid item xs={12} sm={6} md={6} lg={6} key={index}>
+                            <RecipeReviewCard recipe={recipe}/>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Container>
+        </>
     );
 }
