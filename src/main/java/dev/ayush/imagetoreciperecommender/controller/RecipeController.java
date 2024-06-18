@@ -13,8 +13,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Controller Class that handles converting an image to a list of detected ingredients (via call to clarifai object detection model),
+then responding with a list of recipe's recommended by the spoonacular API's getRecipeByIngredients endpoint
+ */
 @RestController
-@RequestMapping("/recipes")  // http:localhost:8080/recipes
+@RequestMapping("/recipes")
 @CrossOrigin()
 public class RecipeController {
 
@@ -29,29 +33,29 @@ public class RecipeController {
         this.spoonacularClient = spoonacularClient;
     }
 
-
+    // Converts an image to a list of recipes by making the appropriate API calls
     @PostMapping
     public ResponseEntity<?> getRecipesFromImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
-
         // return error if empty file uploaded
         if (imageFile.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No file selected to upload.");
         }
 
-        // obtain detected ingredients from image file using API
+        // obtain detected ingredients from image file using three calls to appropriate endpoints
         try {
+            // extract image as bytes and get detected ingredients
             byte[] imageBytes = imageFile.getBytes();
             System.out.println("File size: " + imageBytes.length);
             List<String> detectedIngredients = ingredientData.generateIngredientList(clarifaiClient, imageBytes);
 
+            // get recipes based on ingredients
             Recipe[] recipes = spoonacularClient.getRecipesByIngredients(detectedIngredients);
 
-            // create array of recipe id strings
+            // get full recipe information by calling another spoonacular endpoint
             List<Integer> recipeIds = new ArrayList<Integer>();
             for (Recipe recipe : recipes) {
                 recipeIds.add(recipe.getId());
             }
-            // use this recipe array to call a new method within spoonacular client that will return an array of additional recipe info
             Recipe[] recipeWithFullInformation = spoonacularClient.getFullRecipeInfoBulk(recipeIds);
 
             return ResponseEntity.status(HttpStatus.OK).body(recipeWithFullInformation);
@@ -59,7 +63,7 @@ public class RecipeController {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("API ERROR"); // TODO: UPDATE THIS ERROR MESSAGE< DOENST REPRESENT APP ERROR
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("API ERROR");
         }
     }
 }

@@ -10,8 +10,12 @@ import org.springframework.http.ResponseEntity;
 import java.io.IOException;
 import java.util.List;
 
-@RestController // tells spring that this a rest controller class
-@RequestMapping("/ingredients")  // http:localhost:8080/ingredients
+/*
+Controller Class that handles converting an image to a list of detected ingredients, via a call to a third part object
+detection model
+ */
+@RestController
+@RequestMapping("/ingredients")
 @CrossOrigin()
 public class IngredientDataController {
 
@@ -26,10 +30,9 @@ public class IngredientDataController {
 
     @PostMapping
     public ResponseEntity<?> getIngredientsFromImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
-
         // return error if empty file uploaded
         if (imageFile.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No file selected to upload.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Empty file uploaded");
         }
 
         // obtain detected ingredients from image file using API
@@ -38,9 +41,8 @@ public class IngredientDataController {
             System.out.println("File size: " + imageBytes.length);
             List<String> detectedIngredients = ingredientData.generateIngredientList(apiClient, imageBytes);
             return ResponseEntity.status(HttpStatus.OK).body(detectedIngredients);
-
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("API ERROR"); // TODO: UPDATE THIS ERROR MESSAGE< DOENST REPRESENT APP ERROR
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("API ERROR");
         }
     }
 }

@@ -31,10 +31,11 @@ class IngredientDataTest {
     @Test
     void testGenerateIngredientList() throws IOException {
         byte[] imageFile = "image data".getBytes();
+
+        // mock API call
         when(clarifaiClient.ObjectsFromImage(imageFile)).thenReturn(Arrays.asList(detectedObject1, detectedObject2, detectedObject3));
 
         List<String> result = ingredientData.generateIngredientList(clarifaiClient, imageFile);
-
         assertNotNull(result);
         assertEquals(1, result.size());
         assertTrue(result.contains("Broccoli"));

@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
+/*
  * This class stores the list of ingredients detected in the image, it includes methods for creating that list
  * by removing low probability detections and removing not food detections. The object detection API is called to
  * generate an initial unfiltered list of detected objects before filtering.
@@ -29,6 +29,7 @@ public class IngredientData {
         this.filterDataList(); // remove low probability detections
         List<String> imageLabels =  this.getLabels();
         // TODO: new function to remove unwanted objects (ie objects that are not food items) ????
+
         return getIngredientLabels(imageLabels);
     }
 

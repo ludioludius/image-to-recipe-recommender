@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
+/*
  * This class handles communication with the clarifai API's object detection model
  */
 @Component
@@ -36,9 +36,6 @@ public class ClarifaiClient {
             "Seafood", "Shrimp", "Snack", "Squash", "Squid","Strawberry", "Sushi", "Tomato", "Turkey","Vegetable",
             "Waffle", "Watermelon", "Wine","Winter melon", "Zucchini"
     );
-
-    @Value("${api.key}")
-    private String apiKey;
 
     // returns the data returned by a call the api with the given image
     public List<DetectedObject> ObjectsFromImage(byte[] imageFile) throws IOException {

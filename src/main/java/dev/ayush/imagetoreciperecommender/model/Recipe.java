@@ -16,6 +16,17 @@ public class Recipe {
     private List<Ingredient> extendedIngredients;
     private String summary;
 
+    public Recipe(int i, String s, String image, int i1, String s1, String url, List<Ingredient> extendedIngredients, String s2) {
+        this.id = i;
+        this.title = s;
+        this.image = image;
+        this.servings = i1;
+        this.sourceName = s1;
+        this.sourceUrl = url;
+        this.extendedIngredients = extendedIngredients;
+        this.summary = s2;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;

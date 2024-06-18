@@ -45,7 +45,7 @@ class WebMockTest {
                 .andExpect(content().string("No file selected to upload."));
     }
 
-    // TODO: include an actual image here
+
     @Test
     void testSuccessfulRequest200() throws Exception {
         byte[] imageBytes = "image data".getBytes();

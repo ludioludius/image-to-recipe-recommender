@@ -11,10 +11,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 import java.net.URI;
 
+/*
+Includes methods for handling communication with the spoonacular API
+ */
 @Component
 public class SpoonacularClient {
-    @Value("${spoonacular_key}")
-    private String apiKey;
 
     private final RestTemplate restTemplate;
 
@@ -23,6 +24,7 @@ public class SpoonacularClient {
         this.restTemplate = restTemplate;
     }
 
+    // call the getRecipeByIngredients endpoint of the spoonacular service
     public Recipe[] getRecipesByIngredients(List<String> ingredients) {
         // convert list of ingredients into comma separated string
         String ingredientsParam = String.join(",", ingredients);
@@ -36,6 +38,7 @@ public class SpoonacularClient {
         return restTemplate.getForObject(uri, Recipe[].class);
     }
 
+    // call to the getRecipeInfoBulk endpoint of the spoonacular service
     public Recipe[] getFullRecipeInfoBulk(List<Integer> recipeIds) {
         // Convert List<Integer> to a comma-separated String
         StringBuilder sb = new StringBuilder();
@@ -47,7 +50,6 @@ public class SpoonacularClient {
         }
 
         String recipeIdsString = sb.toString();
-
         URI uri = UriComponentsBuilder.fromHttpUrl("https://api.spoonacular.com/recipes/informationBulk")
                 .queryParam("ids", recipeIdsString)
                 .queryParam("apiKey", "2fc6e4e3981a4b9bb4142a8f627d4e8a")

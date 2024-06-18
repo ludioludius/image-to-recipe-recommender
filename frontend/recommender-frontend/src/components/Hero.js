@@ -1,14 +1,12 @@
 import * as React from 'react';
-import {alpha, Card, CardHeader, CircularProgress, Grid} from '@mui/material';
+import {alpha, CircularProgress, Grid} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import {useRef, useState} from 'react';
 import axios from "axios";
-import Recipes from "./Recipes";
 import RecipeReviewCard from "./RecipeReviewCard";
 
 
@@ -132,11 +130,7 @@ export default function Hero() {
                     </Stack>
 
                     <Typography variant="caption" textAlign="center" sx={{opacity: 0.8}}>
-                        By clicking &quot;Start now&quot; you agree to our&nbsp;
-                        <Link href="#" color="primary">
-                        Terms & Conditions
-                        </Link>
-                        .
+                        Click the button above to take a photo on mobile or upload a photo on desktop.
                     </Typography>
                 </Stack>
                 {loading && <CircularProgress sx={{ mt: 2 }} />}
