@@ -42,7 +42,7 @@ class WebMockTest {
                         .file(emptyFile))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("No file selected to upload."));
+                .andExpect(content().string("Empty file uploaded"));
     }
 
 
