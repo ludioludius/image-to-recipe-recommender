@@ -3,6 +3,10 @@ package dev.ayush.imagetoreciperecommender.model;
 public class Ingredient {
     private String name;
 
+    public Ingredient(String name) {
+        this.name = name;
+    }
+
     // Getters and Setters
     public String getName() {
         return name;
