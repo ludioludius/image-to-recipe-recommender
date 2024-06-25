@@ -16,6 +16,9 @@ public class Recipe {
     private List<Ingredient> extendedIngredients;
     private String summary;
 
+    // No-argument constructor for Jackson
+    public Recipe() {}
+
     public Recipe(int i, String s, String image, int i1, String s1, String url, List<Ingredient> extendedIngredients, String s2) {
         this.id = i;
         this.title = s;
