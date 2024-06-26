@@ -27,18 +27,12 @@ To develop an API that converts an uploaded image into a list of recipe suggesti
   other endpoints within Spoonacular’s API. The final result is displayed within the recipe cards in the frontend UI, presenting the information in a way that is both useful and aesthetically 
   pleasing to the end user.
 
-## Project setup
+## Project Setup
 
 - If you use Intellij as your IDE, it will automatically install the dependencies in the pom.xml file as a part of the build process. Running tests should also be straighforward through an IDE. If your IDE does not have built in support for JUnit, maven or Java you will have to install them and look up commands to make them work. The github actions workflows provides steps for manually seting up the backend through command line scripts. To run the frontend you will have to cd into the recommender-frontend folder and run `npm install` then `npm start`.
 
 
-## Deployement
+## Deployment
 
 This project is deployed as a multicontiner application setup using docker compose on an EC2 instance. The entry point into the applicaiton is an nginx proxy server that routes requests to the Spring backend or an nginx server that serves the frontend static build files generates as a part of the build process. The containers are deployed onto an AWS EC2 instance setup to run docker. Port 80 is used as an entry point into the applicaiton, other parts of the system (ex: Spring server) cannot be accessed unless through the proxy on port 80. The deployemnt process has been automated using github actions (see deployement yml file for more details)
 
-
----
-
-  Insert Deployement Diagram
-  
----
