@@ -7,7 +7,7 @@ Do you often find yourself with leftover ingredients in your kitchen, unsure of 
 
 ---
 
-![App Demo](./ITR_demo.gif)
+![New Giff](./ITR_demo.gif)
 
 ---
 
